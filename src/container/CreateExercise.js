@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -11,7 +11,7 @@ function CreateExercise(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // take input and put in fetch
+
         const Exercise = {
             username: userName,
             description: description,
@@ -38,21 +38,15 @@ function CreateExercise(props) {
         } catch (err) {
             console.log("Error posting:", err);
         }
-
-        console.log(Exercise);
-
     }
 
     const handleUsernameChange = (event) => {
-        console.log(event.target.value);
         setUserName(event.target.value)
     }
     const handleDescriptionChange = (event) => {
-        console.log(event.target.value);
         setDescription(event.target.value);
     }
     const handleDurationChange = (event) => {
-        console.log(event.target.value);
         setDuration(event.target.value);
     }
     const handleDateChange = (date) => {

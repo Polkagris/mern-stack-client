@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import jwt from 'jsonwebtoken';
 //import 'jwt-decode';
 
 function Home() {
     const [fetchedExercises, setFetchedExercises] = useState([]);
-    const [token, setToken] = useState("");
 
     const getUserInfo = () => {
         //setToken(localStorage.getItem('login'));
@@ -26,12 +26,15 @@ function Home() {
         getExerciseList();
     }, []);
 
-    let myToken = localStorage.getItem('login');
-    let myObjectToken = JSON.parse(myToken);
-    console.log("my object token:", myObjectToken.token);
-    //setToken(myObjectToken.token);
-    //let userIdFromToken = jwt_decode(token);
-    //console.log("token from local storage", token.getItem('token'));
+
+
+
+    /*     let myToken = localStorage.getItem('login');
+        let myObjectToken = JSON.parse(myToken);
+        console.log("my object token:", myObjectToken.token);
+        let decodedToken = jwt.decode(myObjectToken.token);
+        console.log("token decoded:", decodedToken); */
+
 
     return (
         <div>

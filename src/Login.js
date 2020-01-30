@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 function Login(props) {
     const [email, setEmail] = useState("");
@@ -17,34 +18,37 @@ function Login(props) {
     }
 
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        try {
-            const user = await fetch("http://localhost:5000/user/login", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            });
-
-            const userToken = await user.text();
-            setIsLoggedIn(true);
-            setToken(userToken);
-            console.log(userToken);
-
-            localStorage.setItem('login', JSON.stringify({
-                token: userToken
-            }));
-
-        } catch (err) {
-            console.log("Error posting:", err);
+        axios.post("http://localhost:5000/user/login", {
+            email: email,
+            password: password
         }
-        props.history.push("/");
+        ).then(res => {
+            //setIsLoggedIn(true);
+            if (res.data.success) {
+                console.log("res from fetch:", res);
+                //setToken(res.token);
+                localStorage.setItem('token',
+                    res.data.token
+                );
+                props.history.push("/");
+            }
+        }).catch(error => {
+            console.log("error:", error);
+        })
+
+
+        //const userToken = await user.text();
+
+
+        //setToken(userToken);
+        //console.log(userToken);
+
+
+
+
+
     }
 
 

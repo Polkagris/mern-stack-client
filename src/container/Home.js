@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 //import 'jwt-decode';
 
 function Home() {
     const [fetchedExercises, setFetchedExercises] = useState([]);
+    const [token, setToken] = useState("");
 
     const getUserInfo = () => {
         //setToken(localStorage.getItem('login'));
-        console.log("local storage from HOME:", localStorage.getItem('login'));
+        console.log("local storage from HOME:", localStorage.getItem('token'));
+        setToken(localStorage.getItem('token'));
     }
 
     const getExerciseList = async () => {
-        let response = await fetch(`http://localhost:5000/users/5e1b2984ea76a82da04f2d53`);
+        const response = await axios.post(`http://localhost:5000/training/`, { token: token });
 
 
-        let data = await response.json();
+        let data = response.data;
         setFetchedExercises(data);
         console.log("data", data);
         return data;

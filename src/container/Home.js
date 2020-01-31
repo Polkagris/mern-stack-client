@@ -32,13 +32,6 @@ function Home() {
 
 
 
-    /*     let myToken = localStorage.getItem('login');
-        let myObjectToken = JSON.parse(myToken);
-        console.log("my object token:", myObjectToken.token);
-        let decodedToken = jwt.decode(myObjectToken.token);
-        console.log("token decoded:", decodedToken); */
-
-
     return (
         <div>
             <h1>

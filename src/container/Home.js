@@ -16,8 +16,13 @@ function Home() {
     const getExerciseList = async () => {
         if (token === "") return;
         const response = await axios.post(`http://localhost:5000/training/`,
-
-            { token: token });
+            { token: token },
+            {
+                headers:
+                {
+                    Authorization: token
+                }
+            });
         const data = response.data;
         setFetchedExercises(data);
         return data;

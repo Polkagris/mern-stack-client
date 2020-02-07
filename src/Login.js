@@ -25,10 +25,8 @@ function Login(props) {
             password: password
         }
         ).then(async res => {
-            //setIsLoggedIn(true);
             if (res.data.success) {
                 console.log("res from fetch:", res);
-                //setToken(res.token);
                 await localStorage.setItem('token',
                     res.data.token
                 );

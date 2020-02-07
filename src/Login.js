@@ -24,12 +24,12 @@ function Login(props) {
             email: email,
             password: password
         }
-        ).then(res => {
+        ).then(async res => {
             //setIsLoggedIn(true);
             if (res.data.success) {
                 console.log("res from fetch:", res);
                 //setToken(res.token);
-                localStorage.setItem('token',
+                await localStorage.setItem('token',
                     res.data.token
                 );
                 props.history.push("/");

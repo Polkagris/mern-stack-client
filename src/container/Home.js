@@ -8,26 +8,27 @@ function Home() {
     const [fetchedExercises, setFetchedExercises] = useState([]);
     const [token, setToken] = useState("");
 
-    const getUserInfo = () => {
-        //setToken(localStorage.getItem('login'));
-        console.log("local storage from HOME:", localStorage.getItem('token'));
-        setToken(localStorage.getItem('token'));
+    const getUserInfo = async () => {
+        const testToken = localStorage.getItem('token');
+        setToken(testToken);
     }
 
     const getExerciseList = async () => {
-        const response = await axios.post(`http://localhost:5000/training/`, { token: token });
+        if (token === "") return;
+        const response = await axios.post(`http://localhost:5000/training/`,
 
-
-        let data = response.data;
+            { token: token });
+        const data = response.data;
         setFetchedExercises(data);
-        console.log("data", data);
         return data;
     }
 
+    // This runs twice, one time at render, 
+    // second time when token is updated.
     useEffect(() => {
         getUserInfo();
         getExerciseList();
-    }, []);
+    }, [token]);
 
 
 

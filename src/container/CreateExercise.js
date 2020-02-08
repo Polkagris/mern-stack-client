@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +8,13 @@ function CreateExercise(props) {
     const [description, setDescription] = useState("");
     const [duration, setDuration] = useState("");
     const [exerciseDate, setExerciseDate] = useState(new Date());
+
+    const [token, setToken] = useState("");
+
+    const getUserInfo = async () => {
+        const testToken = localStorage.getItem('token');
+        setToken(testToken);
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -52,6 +59,10 @@ function CreateExercise(props) {
     const handleDateChange = (date) => {
         setExerciseDate(date);
     }
+
+    useEffect(() => {
+        getUserInfo();
+    }, [token]);
 
     return (
         <div>

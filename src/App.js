@@ -1,16 +1,15 @@
-import React from 'react';
-import './App.css';
-import Routes from './Routes';
-import NavbarExercise from './container/NavbarExercise';
-
-
-
+import React, { useState } from "react";
+import "./App.css";
+import Routes from "./Routes";
+import NavbarExercise from "./container/NavbarExercise";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <div>
       <NavbarExercise />
-      <Routes />
+      <Routes isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
     </div>
   );
 }

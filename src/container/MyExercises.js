@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import jwt from "jsonwebtoken";
-import axios from "axios";
-//import 'jwt-decode';
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
 
-function MyExercises() {
+function MyExercises(props) {
   const [fetchedExercises, setFetchedExercises] = useState([]);
   const [token, setToken] = useState("");
 
@@ -15,18 +15,8 @@ function MyExercises() {
 
   const getExerciseList = async () => {
     if (token === "") return;
-    const response = await axios.post(
-      `http://localhost:5000/training/`,
-      { token: token },
-      {
-        headers: {
-          Authorization: token
-        }
-      }
-    );
-    const data = response.data;
-    setFetchedExercises(data);
-    return data;
+    const response = await callMyExercisesRoute(token);
+    setFetchedExercises(response.data);
   };
 
   // This runs twice, one time at render,
@@ -36,33 +26,45 @@ function MyExercises() {
     getExerciseList();
   }, [token]);
 
+  console.log("token from myExercises:", token);
   return (
     <div>
-      <h1>This is the home page. Welcome!</h1>
+      {!token == "" ? (
+        <div>
+          <h1>Your exercises:</h1>
 
-      <Table responsive striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th>Exercise</th>
-          </tr>
-        </thead>
+          <Table responsive striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Exercise</th>
+              </tr>
+            </thead>
 
-        {/* Check for undefined */}
-        {fetchedExercises.length < 1 ? (
-          <div>Loading...</div>
-        ) : (
-          fetchedExercises.exercises.map(exercise => (
-            <tbody key={exercise._id}>
-              <tr>
-                <td>{exercise.description}</td>
-              </tr>
-              <tr>
-                <td>{exercise.duration}</td>
-              </tr>
-            </tbody>
-          ))
-        )}
-      </Table>
+            {/* Check for undefined */}
+            {fetchedExercises.length < 1 ? (
+              <div>Loading...</div>
+            ) : (
+              fetchedExercises.exercises.map(exercise => (
+                <tbody key={exercise._id}>
+                  <tr>
+                    <td>{exercise.description}</td>
+                  </tr>
+                  <tr>
+                    <td>{exercise.duration}</td>
+                  </tr>
+                </tbody>
+              ))
+            )}
+          </Table>
+        </div>
+      ) : (
+        <div>
+          <h1>You need to be logged in to see exercises</h1>
+          <Button>
+            <Link to="/login">Login</Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

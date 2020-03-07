@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function CreateExercise(props) {
   const [description, setDescription] = useState("");
@@ -50,26 +51,43 @@ function CreateExercise(props) {
 
   return (
     <div>
-      <h1>This is the page where you create a new exercise. Just saying...</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Exercise description</Form.Label>
-          <Form.Control
-            onChange={handleDescriptionChange}
-            placeholder="description"
-            type="text"
-            value={description}
-          />
-          <Form.Label>Exercise duration</Form.Label>
-          <Form.Control
-            onChange={event => setDuration(event.target.value)}
-            placeholder="duration"
-            type="text"
-            value={duration}
-          />
-        </Form.Group>
-        <input type="submit" value="Submit" className="btn btn-primary"></input>
-      </Form>
+      {token ? (
+        <div>
+          <h1>
+            This is the page where you create a new exercise. Just saying...
+          </h1>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Exercise description</Form.Label>
+              <Form.Control
+                onChange={handleDescriptionChange}
+                placeholder="description"
+                type="text"
+                value={description}
+              />
+              <Form.Label>Exercise duration</Form.Label>
+              <Form.Control
+                onChange={event => setDuration(event.target.value)}
+                placeholder="duration"
+                type="text"
+                value={duration}
+              />
+            </Form.Group>
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-primary"
+            ></input>
+          </Form>
+        </div>
+      ) : (
+        <div>
+          <h1>You need to be logged in to create exercises</h1>
+          <Button>
+            <Link to="/login">Login</Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState("");
-
-  const handleEmailChange = event => {
-    setEmail(event.target.value);
-  };
-  const handlePasswordChange = event => {
-    setPassword(event.target.value);
-  };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -25,7 +16,6 @@ function Login(props) {
       .then(async res => {
         if (res.data.success) {
           console.log("res from fetch:", res);
-          setIsLoggedIn(true);
           await localStorage.setItem("token", res.data.token);
           props.history.push("/my-exercises");
         }
@@ -44,7 +34,7 @@ function Login(props) {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            onChange={handleEmailChange}
+            onChange={event => setEmail(event.target.value)}
             value={email}
           />
         </Form.Group>
@@ -53,7 +43,7 @@ function Login(props) {
           <Form.Control
             type="password"
             placeholder="Password"
-            onChange={handlePasswordChange}
+            onChange={event => setPassword(event.target.value)}
             value={password}
           />
         </Form.Group>

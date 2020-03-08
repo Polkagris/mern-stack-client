@@ -17,6 +17,7 @@ function MyExercises(props) {
     if (token === "") return;
     const response = await callMyExercisesRoute(token);
     setFetchedExercises(response.data);
+    return response.data;
   };
 
   // This runs twice, one time at render,
@@ -39,10 +40,10 @@ function MyExercises(props) {
                 <th>Exercise</th>
               </tr>
             </thead>
-
+            {/* exercise.date.getFullYear()+'-' + (exercise.date.getMonth()+1) + '-'+exercise.date.getDate(); */}
             {/* Check for undefined */}
             {fetchedExercises.length < 1 ? (
-              <div>Loading...</div>
+              <p>Loading...</p>
             ) : (
               fetchedExercises.exercises.map(exercise => (
                 <tbody key={exercise._id}>
@@ -51,6 +52,9 @@ function MyExercises(props) {
                   </tr>
                   <tr>
                     <td>{exercise.duration}</td>
+                  </tr>
+                  <tr>
+                    <td>{exercise.date}</td>
                   </tr>
                 </tbody>
               ))

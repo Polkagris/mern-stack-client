@@ -3,12 +3,13 @@ import { Form, Button } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
 function CreateExercise(props) {
   const [description, setDescription] = useState("");
   const [token, setToken] = useState("");
-  const [duration, setDuration] = useState("");
-  //const [date, setDate] = useState(new Date());
+  const [duration, setDuration] = useState(0);
+  const [date, setDate] = useState(new Date());
 
   const getUserInfo = async () => {
     const testToken = localStorage.getItem("token");
@@ -24,8 +25,8 @@ function CreateExercise(props) {
         {
           token: token,
           description: description,
-          duration: duration
-          //date: date
+          duration: duration,
+          date: date
         },
         {
           headers: {
@@ -69,10 +70,16 @@ function CreateExercise(props) {
               <Form.Control
                 onChange={event => setDuration(event.target.value)}
                 placeholder="duration"
-                type="text"
+                type="number"
                 value={duration}
               />
             </Form.Group>
+            <Form.Label>Exercise duration</Form.Label>
+            <DatePicker
+              dateFormat="dd/MM/yy"
+              selected={date}
+              onChange={selectedDate => setDate(selectedDate)}
+            />
             <input
               type="submit"
               value="Submit"

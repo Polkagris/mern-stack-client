@@ -4,12 +4,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { useDispatch } from "react-redux";
+import { CREATE_EXERCISE } from "../store/actiontypes";
 
 function CreateExercise(props) {
   const [description, setDescription] = useState("");
   const [token, setToken] = useState("");
   const [duration, setDuration] = useState(0);
   const [date, setDate] = useState(new Date());
+
+  const dispatch = useDispatch();
 
   const getUserInfo = async () => {
     const testToken = localStorage.getItem("token");
@@ -36,6 +40,10 @@ function CreateExercise(props) {
       );
       const data = await response.data;
       console.log("Data from create exercise:", data);
+      dispatch({
+        type: CREATE_EXERCISE,
+        payload: { description: description, duration: duration, date: date }
+      });
     } catch (err) {
       console.log("Error posting:", err);
     }

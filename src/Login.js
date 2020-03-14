@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -49,6 +50,9 @@ function Login(props) {
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
+        </Button>
+        <Button variant="info">
+          <Link to="/register">Register</Link>
         </Button>
       </Form>
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import AppliedRoutes from "./components/AppliedRoutes";
 import CreateExercise from "./container/CreateExercise";
@@ -10,6 +10,18 @@ import Create from "./container/Create";
 import Home from "./container/Home";
 
 function Routes({ appProps, isLoggedIn, setIsLoggedIn }) {
+  const [exercises, setExercises] = useState([]);
+
+  const propsFromMyExercisesCallback = exercisesProps => {
+    console.log("props to parent in Home:", exercises);
+    setExercises(exercisesProps);
+    console.log("exercises in Routes:", exercises);
+  };
+
+  useEffect(() => {
+    propsFromMyExercisesCallback();
+  });
+
   return (
     <Switch>
       {/* <AppliedRoutes path="/" exact component={Home} isLoggedIn={isLoggedIn} /> */}
@@ -17,15 +29,32 @@ function Routes({ appProps, isLoggedIn, setIsLoggedIn }) {
         exact
         path="/"
         render={props => (
-          <Home {...props} isLoggedIn={isLoggedIn} appProps={appProps} />
+          <Home
+            {...props}
+            isLoggedIn={isLoggedIn}
+            appProps={appProps}
+            exercises={exercises}
+          />
         )}
       />
-      <AppliedRoutes
+      <Route
+        exact
+        path="/my-exercises"
+        render={props => (
+          <MyExercises
+            {...props}
+            appProps={appProps}
+            childCallback={propsFromMyExercisesCallback}
+          />
+        )}
+      />
+      {/*       <AppliedRoutes
         path="/my-exercises"
         exact
         component={MyExercises}
         appProps={appProps}
-      />
+        propsFromMyExercisesCallback={propsFromMyExercisesCallback}
+      /> */}
       <Route
         exact
         path="/login"

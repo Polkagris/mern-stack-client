@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       <NavbarExercise />
-      <Routes isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Routes isLoggedIn={isLoggedIn} />
     </div>
   );
 }

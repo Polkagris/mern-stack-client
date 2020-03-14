@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
+import ExerciseGraph from "../components/ExerciseGraph";
 
 const Home = props => {
   console.log("appProps:", props);
+  console.log("exercises props in Home:", props.exercises);
 
   const [token, setToken] = useState("");
 
@@ -22,6 +24,7 @@ const Home = props => {
       {token ? (
         <div>
           <h1>This is the home page. Welcome!</h1>
+          <ExerciseGraph />
           <LogoutButton />
         </div>
       ) : (
@@ -30,7 +33,7 @@ const Home = props => {
             <Link to="/login">Login</Link>
           </Button>
           <Button variant="info">
-            <Link to="/login">Register</Link>
+            <Link to="/register">Register</Link>
           </Button>
         </div>
       )}

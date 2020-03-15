@@ -31,7 +31,11 @@ function ExerciseGraph() {
   const getExerciseList = async () => {
     if (token === "") return;
     const response = await callMyExercisesRoute(token);
-    setFetchedExercises(response.data.exercises);
+    setFetchedExercises(
+      response.data.exercises.sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+      })
+    );
     console.log("Exerciselist from GRAPH:", response.data.exercises);
     dispatch({
       type: GET_EXERCISES,
@@ -42,7 +46,7 @@ function ExerciseGraph() {
 
   function formatXAxis(tickItem) {
     console.log("tickItem in formatX in Graph:", moment(tickItem));
-    return moment(tickItem).format("dd/MM/yy");
+    return moment(tickItem).format("MMM Do");
   }
 
   useEffect(() => {

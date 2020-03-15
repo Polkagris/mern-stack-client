@@ -1,5 +1,6 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import * as moment from "moment";
 import {
   LineChart,
   Line,
@@ -7,43 +8,67 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  BarChart,
+  Bar,
+  Cell
 } from "recharts";
-
-/* const data = [
-    { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-  { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-  { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-  { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-  { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-  { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-  { name: "Page G", uv: 3490, pv: 4300, amt: 2100 } 
-  {}
-]; */
+import { GET_EXERCISES } from "../store/actiontypes";
+import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
 
 function ExerciseGraph() {
+  const [fetchedExercises, setFetchedExercises] = useState([]);
+  const [token, setToken] = useState("");
+
   const exercises = useSelector(state => state.exercises);
-  console.log("Exercises in GRAPH:", exercises);
+  const dispatch = useDispatch();
+
+  const getUserInfo = async () => {
+    const testToken = localStorage.getItem("token");
+    setToken(testToken);
+  };
+
+  const getExerciseList = async () => {
+    if (token === "") return;
+    const response = await callMyExercisesRoute(token);
+    setFetchedExercises(response.data.exercises);
+    console.log("Exerciselist from GRAPH:", response.data.exercises);
+    dispatch({
+      type: GET_EXERCISES,
+      payload: { exercises: [response.data] }
+    });
+    return response.data;
+  };
+
+  function formatXAxis(tickItem) {
+    console.log("tickItem in formatX in Graph:", moment(tickItem));
+    return moment(tickItem).format("dd/MM/yy");
+  }
+
+  useEffect(() => {
+    getUserInfo();
+    getExerciseList();
+  }, [token]);
+
   return (
-    <LineChart
-      width={600}
-      height={300}
-      data={exercises}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+    <BarChart
+      width={1000}
+      height={400}
+      data={fetchedExercises}
+      margin={{
+        top: 5,
+        right: 30,
+        left: 20,
+        bottom: 5
+      }}
     >
-      <XAxis dataKey="date" />
-      <YAxis dataKey="duration" />
       <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="date" tickFormatter={formatXAxis} />
+      <YAxis />
       <Tooltip />
       <Legend />
-      <Line
-        type="monotone"
-        dataKey="duration"
-        stroke="#8884d8"
-        activeDot={{ r: 8 }}
-      />
-      {/* <Line type="monotone" dataKey="exercise" stroke="#82ca9d" /> */}
-    </LineChart>
+      <Bar dataKey="duration" fill="#8884d8" />
+    </BarChart>
   );
 }
 

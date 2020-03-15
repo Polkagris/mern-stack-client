@@ -1,5 +1,9 @@
-import CREATE_EXERCISES from "./actiontypes";
+import { CREATE_EXERCISE, GET_EXERCISES } from "./actiontypes";
 
-export function getExercises(payload) {
-  return { type: CREATE_EXERCISES, payload };
+export function createExercise(payload) {
+  return { type: CREATE_EXERCISE, payload };
+}
+
+export function getAllExercises(payload) {
+  return { type: GET_EXERCISES, payload };
 }

@@ -4,12 +4,14 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
+import { getAllExercises, createExercise } from "../store/actions";
+import { GET_EXERCISES } from "../store/actiontypes";
 
 function MyExercises(props) {
   const [fetchedExercises, setFetchedExercises] = useState([]);
   const [token, setToken] = useState("");
-  const exercises = useSelector(state => state.exercises);
-  // const dispatch = useDispatch();
+
+  const dispatch = useDispatch();
 
   const getUserInfo = async () => {
     const testToken = localStorage.getItem("token");
@@ -20,14 +22,13 @@ function MyExercises(props) {
     if (token === "") return;
     const response = await callMyExercisesRoute(token);
     setFetchedExercises(response.data);
-    //dispatch({ fetchedExercises });
+    console.log("Exerciselist from myExercises:", response.data);
+    dispatch({
+      type: GET_EXERCISES,
+      payload: { exercises: [response.data] }
+    });
     return response.data;
   };
-
-  /*   const sendProps = () => {
-    console.log("callback fired in myExercises component", fetchedExercises);
-    props.childCallback(fetchedExercises);
-  }; */
 
   // This runs twice, one time at render,
   // second time when token is updated.

@@ -3,18 +3,58 @@ import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useGetExercises from "../utils/hooks/useGetExercises";
+import Axios from "axios";
+import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
+import { GET_EXERCISES } from "../store/actiontypes";
+import { useDispatch } from "react-redux";
 
 function MyExercises(props) {
-  const fetchedExercisesFromHook = useGetExercises();
+  // const fetchedExercisesFromHook = getExerciseList();
   const [token, setToken] = useState("");
+  const [fetchedExercises, setFetchedExercises] = useState([]);
 
   const getUserInfo = async () => {
     const testToken = localStorage.getItem("token");
     setToken(testToken);
   };
 
+  const getExerciseList = async () => {
+    if (token === "") return;
+    const response = await callMyExercisesRoute(token);
+    setFetchedExercises(response.data);
+    console.log("Exerciselist from myExercises:", response.data);
+    // useDispatch({
+    //   type: GET_EXERCISES,
+    //   payload: { exercises: [response.data] }
+    // });
+    return response.data;
+  };
+
+  const deleteExercise = async exercise => {
+    console.log("DELETE exercise:", exercise);
+
+    const response = await Axios.delete(
+      `http://localhost:5000/training/delete-exercise`,
+      {
+        headers: {
+          Authorization: token,
+          token: token,
+          exerciseId: exercise._id
+        },
+        data: {
+          token: token,
+          exerciseId: exercise._id
+        }
+      }
+    );
+    const newList = await callMyExercisesRoute(token);
+    setFetchedExercises(newList.data);
+    return response;
+  };
+
   useEffect(() => {
     getUserInfo();
+    getExerciseList();
   }, [token]);
 
   console.log("token from myExercises:", token);
@@ -31,10 +71,10 @@ function MyExercises(props) {
               </tr>
             </thead>
             {/* Check for undefined */}
-            {fetchedExercisesFromHook.length < 1 ? (
+            {fetchedExercises.length < 1 ? (
               <p>Loading...</p>
             ) : (
-              fetchedExercisesFromHook.exercises.map(exercise => (
+              fetchedExercises.exercises.map((exercise, index) => (
                 <tbody key={exercise._id}>
                   <tr>
                     <td>{exercise.description}</td>
@@ -44,6 +84,11 @@ function MyExercises(props) {
                   </tr>
                   <tr>
                     <td>{exercise.date}</td>
+                  </tr>
+                  <tr>
+                    <Button onClick={() => deleteExercise(exercise)}>
+                      Delete
+                    </Button>
                   </tr>
                 </tbody>
               ))

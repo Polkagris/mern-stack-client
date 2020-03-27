@@ -3,8 +3,8 @@ import { Switch, Route } from "react-router-dom";
 import AppliedRoutes from "./components/AppliedRoutes";
 import NotFound from "./components/NotFound";
 import MyExercises from "./container/MyExercises";
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./container/Login";
+import Register from "./container/Register";
 import Create from "./container/Create";
 import Home from "./container/Home";
 

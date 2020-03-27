@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useGetExercises from "../utils/hooks/useGetExercises";
-import Axios from "axios";
 import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
-import { GET_EXERCISES } from "../store/actiontypes";
-import { useDispatch } from "react-redux";
 import moment from "moment";
+import deleteCall from "../utils/api/deleteExercise";
 
 function MyExercises(props) {
   // const fetchedExercisesFromHook = getExerciseList();
@@ -34,20 +31,7 @@ function MyExercises(props) {
   const deleteExercise = async exercise => {
     console.log("DELETE exercise:", exercise);
 
-    const response = await Axios.delete(
-      `http://localhost:5000/training/delete-exercise`,
-      {
-        headers: {
-          Authorization: token,
-          token: token,
-          exerciseId: exercise._id
-        },
-        data: {
-          token: token,
-          exerciseId: exercise._id
-        }
-      }
-    );
+    const response = await deleteCall(token, exercise);
     const newList = await callMyExercisesRoute(token);
     setFetchedExercises(newList.data);
     return response;
@@ -58,7 +42,7 @@ function MyExercises(props) {
     getExerciseList();
   }, [token]);
 
-  console.log("token from myExercises:", token);
+  //console.log("token from myExercises:", token);
   return (
     <div>
       {!token == "" ? (
@@ -73,7 +57,11 @@ function MyExercises(props) {
             </thead>
             {/* Check for undefined */}
             {fetchedExercises.length < 1 ? (
-              <p>Loading...</p>
+              <thead>
+                <tr>
+                  <th>Loading...</th>
+                </tr>
+              </thead>
             ) : (
               fetchedExercises.exercises.map((exercise, index) => (
                 <tbody key={exercise._id}>
@@ -86,10 +74,13 @@ function MyExercises(props) {
                   <tr>
                     <td>Date: {moment(exercise.date).format("DD.MM.YY")}</td>
                   </tr>
+
                   <tr>
-                    <Button onClick={() => deleteExercise(exercise)}>
-                      Delete
-                    </Button>
+                    <th>
+                      <Button onClick={() => deleteExercise(exercise)}>
+                        Delete
+                      </Button>
+                    </th>
                   </tr>
                 </tbody>
               ))

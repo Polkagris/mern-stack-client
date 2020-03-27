@@ -5,9 +5,6 @@ import LogoutButton from "../components/LogoutButton";
 import ExerciseGraph from "../components/ExerciseGraph";
 
 const Home = props => {
-  console.log("appProps:", props);
-  console.log("exercises props in Home:", props.exercises);
-
   const [token, setToken] = useState("");
 
   const getTokenFromLocalStorage = () => {

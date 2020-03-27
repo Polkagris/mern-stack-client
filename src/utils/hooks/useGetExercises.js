@@ -18,7 +18,7 @@ function useGetExercises() {
     if (token === "") return;
     const response = await callMyExercisesRoute(token);
     setFetchedExercises(response.data);
-    console.log("Exerciselist from myExercises:", response.data);
+    //console.log("Exerciselist from myExercises:", response.data);
     dispatch({
       type: GET_EXERCISES,
       payload: { exercises: [response.data] }

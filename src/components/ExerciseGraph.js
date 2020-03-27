@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as moment from "moment";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   BarChart,
-  Bar,
-  Cell
+  Bar
 } from "recharts";
 import { GET_EXERCISES } from "../store/actiontypes";
 import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
@@ -20,7 +17,7 @@ function ExerciseGraph() {
   const [fetchedExercises, setFetchedExercises] = useState([]);
   const [token, setToken] = useState("");
 
-  const exercises = useSelector(state => state.exercises);
+  //const exercises = useSelector(state => state.exercises);
   const dispatch = useDispatch();
   const monthNames = [
     "January",
@@ -51,7 +48,7 @@ function ExerciseGraph() {
         return new Date(a.date) - new Date(b.date);
       })
     );
-    console.log("Exerciselist from GRAPH:", response.data.exercises);
+    //console.log("Exerciselist from GRAPH:", response.data.exercises);
     dispatch({
       type: GET_EXERCISES,
       payload: { exercises: [response.data] }
@@ -60,7 +57,7 @@ function ExerciseGraph() {
   };
 
   function formatXAxis(tickItem) {
-    console.log("tickItem in formatX in Graph:", moment(tickItem));
+    //console.log("tickItem in formatX in Graph:", moment(tickItem));
     return moment(tickItem).format("DD.MM");
   }
 

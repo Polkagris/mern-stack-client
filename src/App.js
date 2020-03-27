@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Routes from "./Routes";
-import NavbarExercise from "./container/NavbarExercise";
+import NavbarExercise from "./components/NavbarExercise";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

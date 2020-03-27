@@ -22,6 +22,21 @@ function ExerciseGraph() {
 
   const exercises = useSelector(state => state.exercises);
   const dispatch = useDispatch();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  const currentMonth = new Date().getMonth();
 
   const getUserInfo = async () => {
     const testToken = localStorage.getItem("token");
@@ -46,7 +61,7 @@ function ExerciseGraph() {
 
   function formatXAxis(tickItem) {
     console.log("tickItem in formatX in Graph:", moment(tickItem));
-    return moment(tickItem).format("MMM Do");
+    return moment(tickItem).format("DD.MM");
   }
 
   useEffect(() => {
@@ -55,24 +70,27 @@ function ExerciseGraph() {
   }, [token]);
 
   return (
-    <BarChart
-      width={1000}
-      height={400}
-      data={fetchedExercises}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 5
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" tickFormatter={formatXAxis} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="duration" fill="#8884d8" />
-    </BarChart>
+    <>
+      <h2>{monthNames[currentMonth]}</h2>
+      <BarChart
+        width={1000}
+        height={400}
+        data={fetchedExercises}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" tickFormatter={formatXAxis} />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="duration" fill="#8884d8" />
+      </BarChart>
+    </>
   );
 }
 

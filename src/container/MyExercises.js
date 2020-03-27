@@ -7,6 +7,7 @@ import Axios from "axios";
 import callMyExercisesRoute from "../utils/api/callMyExercisesRoute";
 import { GET_EXERCISES } from "../store/actiontypes";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 
 function MyExercises(props) {
   // const fetchedExercisesFromHook = getExerciseList();
@@ -77,13 +78,13 @@ function MyExercises(props) {
               fetchedExercises.exercises.map((exercise, index) => (
                 <tbody key={exercise._id}>
                   <tr>
-                    <td>{exercise.description}</td>
+                    <td>Exercise: {exercise.description}</td>
                   </tr>
                   <tr>
-                    <td>{exercise.duration}</td>
+                    <td>Duration: {exercise.duration}</td>
                   </tr>
                   <tr>
-                    <td>{exercise.date}</td>
+                    <td>Date: {moment(exercise.date).format("DD.MM.YY")}</td>
                   </tr>
                   <tr>
                     <Button onClick={() => deleteExercise(exercise)}>
